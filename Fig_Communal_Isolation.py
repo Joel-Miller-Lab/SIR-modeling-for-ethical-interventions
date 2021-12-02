@@ -58,7 +58,7 @@ def graphmaker(xvals, yvals, data, title, xlab, ylab, cbarlabel, data_min, data_
     
             
     contours = plt.contour(x, y, data, levels, colors='k', linewidths=0.75)
-    plt.clabel(contours, rightside_up=True, manual=True, fmt='%g')
+    plt.clabel(contours, rightside_up=True, fmt='%g')
     
     cbar.set_label(cbarlabel)
     fig.suptitle(title, fontsize=12)
@@ -102,7 +102,7 @@ plt.savefig('ManyPeopleIsolating.png')
 
 num_saved_by_one_more_isolating = R0*(1 - prop_infected_c)/(1 - Rc*(1 - prop_infected_c))
 
-graphmaker(R0, c, num_saved_by_one_more_isolating, '', 'Starting reproduction number', 'Proportion of infected people who isolate', 'Number of infections averted by \n one more person isolating', 1e-1, 1e3, [0.1, 0.3, 1, 3, 10, 100], norm='log')
+graphmaker(R0, c, num_saved_by_one_more_isolating, '', 'Starting reproduction number', 'Proportion of infected people who isolate', 'Number of infections averted by \n one more individual isolating', 1e-1, 1e3, [0.1, 0.3, 1, 3, 10, 100], norm='log')
 
 plt. savefig('OneMoreIsolating.png')
 

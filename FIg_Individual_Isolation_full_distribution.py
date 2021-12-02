@@ -127,7 +127,7 @@ def colour(val):
 
 numcases = np.arange(sizemax)
 
-fig = plt.figure(figsize = (16,4))
+fig = plt.figure(figsize = (5.8, 7.5))
 ax = fig.add_subplot(111)
 ax0 = fig.add_subplot(121)
 ax1 = fig.add_subplot(122)
@@ -148,7 +148,7 @@ ax1.set_xscale('symlog')
 
 # ax.set_xlabel('Number of averted cases due to one \n individual isolating after infection')
 #ax.set_xlabel('Number of cases averted by one infected individual isolating')
-ax.set_xlabel('Number of cases averted')
+ax.set_xlabel('Number of infections averted')
 
 ax.set_ylabel('Probability')
 ax.yaxis.labelpad = 15
