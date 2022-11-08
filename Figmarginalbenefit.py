@@ -78,7 +78,7 @@ for i1 in range(lenRc):
     ax0.semilogy(E, Benefit_p[:,i1])
     ax1.semilogy(E, Benefit_nb[:,i1], label = r'$\mathcal{R}_c=' + str(Rc[i1]) +'$')
 
-ax.set_xlabel('Number of other introductions', FontSize=12)
+ax.set_xlabel('Number of other (non-isolating) introductions', FontSize=12)
 ax.set_ylabel('Reduction in epidemic probability from one infected person isolating', FontSize=12)
 ax.yaxis.labelpad = 15
 ax0.set_xlim([0, maxE])
