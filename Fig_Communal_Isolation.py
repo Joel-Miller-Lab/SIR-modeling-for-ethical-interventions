@@ -8,7 +8,7 @@ Created on Tue Nov 10 17:43:21 2020
 PLOTS 3 HEAT MAPS SHOWING DIFFERENT STATISTICS AGAINST STARTING REPRODUCTION NUMBER AND PROPORTION OF PEOPLE WHO ISOLATE:
 1. NUMBER OF INFECTIONS PREVENTED PER ISOLATING INDIVIDUAL
 2. NUMBER OF INFECTIONS PREVENTED BY ONE MORE PERSON ISOLATING
-3. PROPORTION OF TOTAL POPULATION ISOLATING (THIS ONE ISN'T IN THE PAPER)
+3. PROPORTION OF TOTAL POPULATION ISOLATING (THIS ONE ISN'T IN THE PAPER)  [no longer does this (commented out at bottom)]
 '''
 
 import numpy as np
@@ -44,31 +44,29 @@ title: The figure title
 xlab/ylab: x- and y-axis labels
 cbarlabel: A label for the colour bar
 '''
-def graphmaker(xvals, yvals, data, title, xlab, ylab, cbarlabel, data_min, data_max, levels,**kwargs):
+def graphmaker(ax,xvals, yvals, data, title, xlab, ylab, cbarlabel, data_min, data_max, levels,**kwargs):
     x,y=np.meshgrid(xvals,yvals)
-    fig = plt.figure(figsize=(5.8,3.75))
-    ax = plt.axes()
-
+    
     if 'norm' in kwargs and kwargs.get('norm')=='log':
         norm=cl.LogNorm(vmin=data_min, vmax=data_max)
     else:
         norm=cl.Normalize(vmin=data_min,vmax=data_max)
     im=ax.pcolormesh(x,y,data,cmap="Spectral_r",norm=norm)
-    cbar=fig.colorbar(im, extend='max')
+    cbar=plt.colorbar(im, extend='max', ax=ax)
     
             
-    contours = plt.contour(x, y, data, levels, colors='k', linewidths=0.75)
+    contours = ax.contour(x, y, data, levels, colors='k', linewidths=0.75)
     plt.clabel(contours, rightside_up=True, fmt='%g')
     
-    cbar.set_label(cbarlabel)
-    fig.suptitle(title, fontsize=12)
-    plt.ticklabel_format(style='sci',scilimits=(-2,2))
-    plt.xlabel(xlab)
-    plt.ylabel(ylab)
+    cbar.set_label(cbarlabel, FontSize=11)
+    #plt.suptitle(title, fontsize=11)
+    ax.ticklabel_format(style='sci',scilimits=(-2,2))
+    ax.set_xlabel(xlab, FontSize=11)
+    ax.set_ylabel(ylab, FontSize=11)
 
-    plt.xlim([np.min(xvals),np.max(xvals)])
-    plt.ylim([np.min(yvals),np.max(yvals)])
-    plt.subplots_adjust(left=0.1,right=0.95,bottom=0.15,wspace=0.25)
+    ax.set_xlim([np.min(xvals),np.max(xvals)])
+    ax.set_ylim([np.min(yvals),np.max(yvals)])
+    #ax.subplots_adjust(left=0.1,right=0.95,bottom=0.15,wspace=0.25)
 
 '''
 Initial parameters
@@ -90,24 +88,31 @@ R0 = np.linspace(1, 4, res)
 c = np.linspace(0, 1, res)
 Rc = R0*(1-c.reshape(res,1))
 
+
+fig = plt.figure(figsize = (15, 4))
+axL = fig.add_subplot(121)
+axR = fig.add_subplot(122)
+plt.subplots_adjust(wspace=0.3)
+
+
 prop_infected_c = P_Infected(Rc,errbnd)
 prop_infected_none = prop_infected_c[0,:]
 prop_saved = prop_infected_none - prop_infected_c
 
 num_saved_per_person = prop_saved/(prop_infected_c*c)
 
-graphmaker(R0, c, num_saved_per_person, '', 'Starting reproduction number', 'Proportion of infected people who isolate', 'Number of infections averted \n per isolating individual', 1e-3, 1e3, [1e-2, 1e-1, 1, 10, 1e2], norm='log')
+graphmaker(axL, R0, c, num_saved_per_person, '', 'Starting reproduction number', 'Proportion of infected people who isolate', 'Number of infections averted \n per isolating individual', 1e-3, 1e3, [1e-2, 1e-1, 1, 10, 1e2], norm='log')
 
-plt.savefig('ManyPeopleIsolating.png')
+#plt.savefig('ManyPeopleIsolating.png')
 
 num_saved_by_one_more_isolating = R0*(1 - prop_infected_c)/(1 - Rc*(1 - prop_infected_c))
 
-graphmaker(R0, c, num_saved_by_one_more_isolating, '', 'Starting reproduction number', 'Proportion of infected people who isolate', 'Number of infections averted by \n one more individual isolating', 1e-1, 1e3, [0.1, 0.3, 1, 3, 10, 100], norm='log')
+graphmaker(axR, R0, c, num_saved_by_one_more_isolating, '', 'Starting reproduction number', 'Proportion of infected people who isolate', 'Number of infections averted by \n one more individual isolating', 1e-1, 1e3, [0.1, 0.3, 1, 3, 10, 100], norm='log')
 
-plt. savefig('OneMoreIsolating.png')
+plt.savefig('Isolating.png', bbox_inches='tight')
 
-prop_isolating = prop_infected_c*c.reshape(res, 1)
+#prop_isolating = prop_infected_c*c.reshape(res, 1)
 
-graphmaker(R0, c, prop_isolating, '', 'Starting reproduction number', 'Proportion of infected people who isolate', 'Proportion of total population isolating', 0, 0.41, [0, 0.1, 0.2, 0.3, 0.4])
+#graphmaker(R0, c, prop_isolating, '', 'Starting reproduction number', 'Proportion of infected people who isolate', 'Proportion of total population isolating', 0, 0.41, [0, 0.1, 0.2, 0.3, 0.4])
 
-plt. savefig('PropIsolating.png')
+#plt.savefig('PropIsolating.png')
