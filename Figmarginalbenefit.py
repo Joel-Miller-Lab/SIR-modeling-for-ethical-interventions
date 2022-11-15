@@ -61,16 +61,22 @@ E=(np.arange(maxE+1)).reshape(maxE+1,1)
 Benefit_p = pep*(1 - pep)**(E)
 Benefit_nb = penb*(1 - penb)**(E)
 
-fig = plt.figure(figsize = (5.8, 7.5))
-ax = fig.add_subplot(111)
-ax0 = fig.add_subplot(211)
-ax1 = fig.add_subplot(212)
+fig = plt.figure(figsize = (11, 5.8))
+axL = fig.add_subplot(121)
+axR = fig.add_subplot(122)
 
-ax.spines['top'].set_color('none')
-ax.spines['bottom'].set_color('none')
-ax.spines['left'].set_color('none')
-ax.spines['right'].set_color('none')
-ax.tick_params(labelcolor='w', top=False, bottom=False, left=False, right=False)
+ax0 = fig.add_subplot(221)
+ax1 = fig.add_subplot(223)
+ax0b = fig.add_subplot(222)
+ax1b = fig.add_subplot(224)
+plt.subplots_adjust(wspace=1.0,hspace=0.3)
+
+
+axL.spines['top'].set_color('none')
+axL.spines['bottom'].set_color('none')
+axL.spines['left'].set_color('none')
+axL.spines['right'].set_color('none')
+axL.tick_params(labelcolor='w', top=False, bottom=False, left=False, right=False)
 
 plt.gcf().subplots_adjust(top = 0.92, bottom = 0.09, left = 0.14, right = 0.77)
 
@@ -78,19 +84,19 @@ for i1 in range(lenRc):
     ax0.semilogy(E, Benefit_p[:,i1])
     ax1.semilogy(E, Benefit_nb[:,i1], label = r'$\mathcal{R}_c=' + str(Rc[i1]) +'$')
 
-ax.set_xlabel('Number of other (non-isolating) introductions', FontSize=12)
-ax.set_ylabel('Reduction in epidemic probability from one infected person isolating', FontSize=12)
-ax.yaxis.labelpad = 15
+axL.set_xlabel('Number of other (non-isolating) introductions', FontSize=11)
+axL.set_ylabel('Reduction in epidemic probability from one infected individual isolating', FontSize=11)
+axL.yaxis.labelpad = 15
 ax0.set_xlim([0, maxE])
 ax1.set_xlim([0, maxE])
 ax0.set_ylim([1e-10,2])
 ax1.set_ylim(bottom = 1e-4)
 
-ax0.set_title('Poisson offspring distribution')
-ax1.set_title('Negative binomial offspring distribution')
-ax1.legend(bbox_to_anchor=(1.01, 1.1), loc='center left')
+ax0.set_title('Poisson offspring distribution', FontSize=11)
+ax1.set_title('Negative binomial offspring distribution', FontSize=11)
+ax1.legend(bbox_to_anchor=(1.01, 1.58), loc='center left')
 
-plt.savefig('MarginalBenefit.png')
+#plt.savefig('MarginalBenefit.png')
 
 Tot_infected = 50
 Isolating = np.arange(Tot_infected + 1).reshape(Tot_infected+1,1)
@@ -105,44 +111,40 @@ Tot_benefit_p = (1-pep)**(Tot_infected-Isolating) - (1-pep)**(Tot_infected)
 Tot_benefit_nb = (1-penb)**(Tot_infected-Isolating)- (1-penb)**(Tot_infected)
 
 
-fig = plt.figure(figsize = (5.8, 7.5))
-ax = fig.add_subplot(111)
-ax0 = fig.add_subplot(211)
-ax1 = fig.add_subplot(212)
 
-ax.spines['top'].set_color('none')
-ax.spines['bottom'].set_color('none')
-ax.spines['left'].set_color('none')
-ax.spines['right'].set_color('none')
-ax.tick_params(labelcolor='w', top=False, bottom=False, left=False, right=False)
+axR.spines['top'].set_color('none')
+axR.spines['bottom'].set_color('none')
+axR.spines['left'].set_color('none')
+axR.spines['right'].set_color('none')
+axR.tick_params(labelcolor='w', top=False, bottom=False, left=False, right=False)
 
 plt.gcf().subplots_adjust(top = 0.92, bottom = 0.09, left = 0.14, right = 0.77)
 for i1 in range(lenRc):
     if i1 == 0:
-        ax0.semilogy(Isolating, Tot_benefit_p[:,i1], 'C' + str(i1),label='Total \nbenefit')
-        ax0.semilogy(Isolating[1:], Av_reduction_p[:,i1], 'C' + str(i1) + '--', label = 'Average \nbenefit')
-        ax0.semilogy(Isolating[:Tot_infected], Next_margben_p[:,i1], 'C' + str(i1)+ '-.', label = 'Marginal \nbenefit')
+        ax0b.semilogy(Isolating, Tot_benefit_p[:,i1], 'C' + str(i1),label='Total \nbenefit')
+        ax0b.semilogy(Isolating[1:], Av_reduction_p[:,i1], 'C' + str(i1) + '--', label = 'Average \nbenefit')
+        ax0b.semilogy(Isolating[:Tot_infected], Next_margben_p[:,i1], 'C' + str(i1)+ '-.', label = 'Marginal \nbenefit')
     else:
-        ax0.semilogy(Isolating[1:], Av_reduction_p[:,i1], 'C' + str(i1) + '--')
-        ax0.semilogy(Isolating[:Tot_infected], Next_margben_p[:,i1], 'C' + str(i1)+ '-.')
-        ax0.semilogy(Isolating, Tot_benefit_p[:,i1], 'C' + str(i1))
-    ax1.semilogy(Isolating[1:], Av_reduction_nb[:,i1], 'C' + str(i1) + '--')
-    ax1.semilogy(Isolating[:Tot_infected], Next_margben_nb[:,i1], 'C' + str(i1) + '-.')
-    ax1.semilogy(Isolating, Tot_benefit_nb[:,i1], 'C' + str(i1), label = r'$\mathcal{R}_c=' + str(Rc[i1]) +'$')
+        ax0b.semilogy(Isolating[1:], Av_reduction_p[:,i1], 'C' + str(i1) + '--')
+        ax0b.semilogy(Isolating[:Tot_infected], Next_margben_p[:,i1], 'C' + str(i1)+ '-.')
+        ax0b.semilogy(Isolating, Tot_benefit_p[:,i1], 'C' + str(i1))
+    ax1b.semilogy(Isolating[1:], Av_reduction_nb[:,i1], 'C' + str(i1) + '--')
+    ax1b.semilogy(Isolating[:Tot_infected], Next_margben_nb[:,i1], 'C' + str(i1) + '-.')
+    ax1b.semilogy(Isolating, Tot_benefit_nb[:,i1], 'C' + str(i1), label = r'$\mathcal{R}_c=' + str(Rc[i1]) +'$')
 
-ax.set_xlabel('Number isolating (of 50 introductions)', FontSize=12)
-ax.set_ylabel('Benefit', FontSize=12)
-ax.yaxis.labelpad = 15
+axR.set_xlabel('Number isolating (of 50 introductions)', FontSize=11)
+axR.set_ylabel('Benefit', FontSize=11)
+axR.yaxis.labelpad = 15
 
-ax0.set_ylim([1e-3,1])
-ax1.set_ylim([1e-3,1])
+ax0b.set_ylim([1e-3,1])
+ax1b.set_ylim([1e-3,1])
 
 #ax0.set_xlim([Tot_infected-10, Tot_infected])
-ax0.set_xlim([35, Tot_infected])
-ax1.set_xlim([1, Tot_infected])
-ax0.set_title('Poisson offspring distribution')
-ax1.set_title('Negative binomial offspring distribution')
-ax1.legend(bbox_to_anchor=(1.01, 1.0), loc='upper left')
-ax0.legend(bbox_to_anchor=(1.01,0.4), loc='upper left')
+ax0b.set_xlim([35, Tot_infected])
+ax1b.set_xlim([1, Tot_infected])
+ax0b.set_title('Poisson offspring distribution', FontSize=11)
+ax1b.set_title('Negative binomial offspring distribution', FontSize=11)
+ax1b.legend(bbox_to_anchor=(1.01, 1.9), loc='upper left')
+ax0b.legend(bbox_to_anchor=(1.01,-0.5), loc='upper left')
 
-plt.savefig('ProbMargAvbenefitlog' + str(Tot_infected) + '.png')
+plt.savefig('marg' + str(Tot_infected) + '.png', bbox_inches='tight')
