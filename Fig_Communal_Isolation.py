@@ -58,11 +58,11 @@ def graphmaker(ax,xvals, yvals, data, title, xlab, ylab, cbarlabel, data_min, da
     contours = ax.contour(x, y, data, levels, colors='k', linewidths=0.75)
     plt.clabel(contours, rightside_up=True, fmt='%g')
     
-    cbar.set_label(cbarlabel, FontSize=11)
+    cbar.set_label(cbarlabel, FontSize=12)
     #plt.suptitle(title, fontsize=11)
     ax.ticklabel_format(style='sci',scilimits=(-2,2))
-    ax.set_xlabel(xlab, FontSize=11)
-    ax.set_ylabel(ylab, FontSize=11)
+    ax.set_xlabel(xlab, FontSize=12)
+    ax.set_ylabel(ylab, FontSize=12)
 
     ax.set_xlim([np.min(xvals),np.max(xvals)])
     ax.set_ylim([np.min(yvals),np.max(yvals)])
@@ -89,10 +89,10 @@ c = np.linspace(0, 1, res)
 Rc = R0*(1-c.reshape(res,1))
 
 
-fig = plt.figure(figsize = (15, 4))
+fig = plt.figure(figsize = (14.5, 4))
 axL = fig.add_subplot(121)
 axR = fig.add_subplot(122)
-plt.subplots_adjust(wspace=0.3)
+plt.subplots_adjust(wspace=0.25)
 
 
 prop_infected_c = P_Infected(Rc,errbnd)
